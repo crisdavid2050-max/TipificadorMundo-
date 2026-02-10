@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>TipificadorMundo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>TipificadorMundo</h1>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="mostrarTab('tipificacion', this)">Tipificación</button>
+  <button class="tab" onclick="mostrarTab('sondeo', this)">Sondeo</button>
+</nav>
+
+<section id="tipificacion" class="tab-content active">
+  <div class="grid">
+    <label>Fecha <input type="date" id="fecha"></label>
+    <label>RUT <input type="text" id="rut"></label>
+    <label>Nombre <input type="text" id="nombre"></label>
+    <label>ID Llamada <input type="text" id="idLlamada"></label>
+    <label>Número <input type="text" id="numero"></label>
+    <label>ONT <input type="text" id="ont"></label>
+    <label>OLT <input type="text" id="olt"></label>
+    <label>Dirección <input type="text" id="direccion"></label>
+  </div>
+
+  <label class="full">
+    Observación de Soporte
+    <select id="observacion"></select>
+  </label>
+
+  <div class="buttons">
+    <button onclick="copiarTodo()">📋 Copiar toda la información</button>
+    <button onclick="enviarSondeo()">📨 Enviar Sondeo</button>
+  </div>
+</section>
+
+<section id="sondeo" class="tab-content">
+  <h2>Sondeo</h2>
+  <p>Usa el botón <strong>Enviar Sondeo</strong> para abrir el formulario de Google.</p>
+</section>
+
+<script src="datos.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
