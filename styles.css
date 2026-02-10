@@ -1,0 +1,86 @@
+:root {
+  --azul: #0057b8;
+  --azul-oscuro: #003f8a;
+  --gris: #f4f6f8;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--gris);
+}
+
+header {
+  background: var(--azul);
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab.active {
+  background: var(--azul-oscuro);
+  color: white;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.full {
+  margin-top: 15px;
+}
+
+input, select {
+  padding: 8px;
+  margin-top: 4px;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 12px;
+  border: none;
+  background: var(--azul);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: var(--azul-oscuro);
+}
