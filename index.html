@@ -19,7 +19,9 @@
   <button class="tab" onclick="mostrarTab('configuracion', this)">Configuración</button>
 </nav>
 
+<!-- TIPIFICACIÓN -->
 <section id="tipificacion" class="tab-content active">
+
   <div class="grid">
     <label>Fecha <input type="date" id="fecha"></label>
     <label>Rut <input type="text" id="rut"></label>
@@ -28,6 +30,22 @@
     <label>Número <input type="text" id="numero"></label>
     <label>ONT <input type="text" id="ont"></label>
     <label>OLT <input type="text" id="olt"></label>
+
+    <!-- NUEVOS CAMPOS -->
+    <label>
+      Tarjeta
+      <input type="text" id="tarjeta"
+             inputmode="numeric" pattern="[0-9]*"
+             maxlength="2" placeholder="00">
+    </label>
+
+    <label>
+      Puerto
+      <input type="text" id="puerto"
+             inputmode="numeric" pattern="[0-9]*"
+             maxlength="2" placeholder="00">
+    </label>
+
     <label>Dirección <input type="text" id="direccion"></label>
   </div>
 
@@ -47,21 +65,27 @@
   </div>
 </section>
 
+<!-- SONDEO -->
 <section id="sondeo" class="tab-content">
   <p>Usa el botón <b>Enviar Sondeo</b> para abrir el formulario de Google.</p>
 </section>
 
+<!-- HISTORIAL -->
 <section id="historial" class="tab-content">
   <h2>Historial de Tipificaciones</h2>
   <div id="historialLista"></div>
 </section>
 
+<!-- CONFIGURACIÓN -->
 <section id="configuracion" class="tab-content">
   <h2>Configuración de Observaciones</h2>
+
   <label>Sub-sesión</label>
   <select id="configSesion" onchange="cargarEditor()"></select>
 
-  <textarea id="editorObservaciones" rows="10" placeholder="Una observación por línea"></textarea>
+  <textarea id="editorObservaciones" rows="10"
+    placeholder="Una observación por línea"></textarea>
+
   <br><br>
   <button onclick="guardarObservaciones()">💾 Guardar Observaciones</button>
 </section>
