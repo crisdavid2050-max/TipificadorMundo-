@@ -1,3 +1,4 @@
+/* ===== PESTAÑAS ===== */
 function mostrarTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
@@ -10,53 +11,61 @@ function obtenerDatos() {
   return JSON.parse(localStorage.getItem("observacionesPorSesion")) || observacionesPorSesion;
 }
 
+function guardarDatos(data) {
+  localStorage.setItem("observacionesPorSesion", JSON.stringify(data));
+}
+
 /* ===== SUB-SESIÓN ===== */
 function cargarSubSesiones() {
-  const s = document.getElementById("subSesion");
-  s.innerHTML = "";
-  Object.keys(obtenerDatos()).forEach(k => {
-    s.innerHTML += `<option value="${k}">${k}</option>`;
+  const select = document.getElementById("subSesion");
+  select.innerHTML = "";
+  Object.keys(obtenerDatos()).forEach(s => {
+    select.innerHTML += `<option value="${s}">${s}</option>`;
   });
   cargarObservaciones();
 }
 
+/* ===== CARGAR OBSERVACIONES ===== */
 function cargarObservaciones() {
-  const o = document.getElementById("observacion");
-  o.innerHTML = "";
-  (obtenerDatos()[subSesion.value] || []).forEach(v => {
-    o.innerHTML += `<option value="${v}">${v}</option>`;
+  const sesion = subSesion.value;
+  const cont = document.getElementById("contenedorObservaciones");
+  const preview = document.getElementById("previewObservacion");
+
+  cont.innerHTML = "";
+  preview.innerHTML = "";
+
+  if (sesion === "Manual") {
+    cont.innerHTML = `<textarea id="observacionManual" rows="4"
+      placeholder="Escriba la observación manual aquí"></textarea>`;
+    return;
+  }
+
+  const select = document.createElement("select");
+  select.id = "observacionSelect";
+
+  (obtenerDatos()[sesion] || []).forEach(o => {
+    select.innerHTML += `<option value="${o}">${o}</option>`;
   });
+
+  select.onchange = () => {
+    preview.innerHTML = select.value;
+  };
+
+  cont.appendChild(select);
+  preview.innerHTML = select.value;
 }
 
-/* ===== CONFIGURACIÓN ===== */
-function cargarConfig() {
-  const c = document.getElementById("configSesion");
-  c.innerHTML = "";
-  Object.keys(obtenerDatos()).forEach(k => {
-    c.innerHTML += `<option value="${k}">${k}</option>`;
-  });
-  cargarEditor();
-}
-
-function cargarEditor() {
-  editorObservaciones.value =
-    (obtenerDatos()[configSesion.value] || []).join("\n");
-}
-
-function guardarObservaciones() {
-  const d = obtenerDatos();
-  d[configSesion.value] = editorObservaciones.value
-    .split("\n")
-    .map(x => x.trim())
-    .filter(x => x);
-
-  localStorage.setItem("observacionesPorSesion", JSON.stringify(d));
-  cargarObservaciones();
-  alert("Observaciones guardadas correctamente");
-}
-
-/* ===== COPIAR (ORDEN FIJO) ===== */
+/* ===== COPIAR ===== */
 function copiarTodo() {
+  const sesion = subSesion.value;
+  let observacionFinal = "";
+
+  if (sesion === "Manual") {
+    observacionFinal = document.getElementById("observacionManual").value;
+  } else {
+    observacionFinal = document.getElementById("observacionSelect")?.value || "";
+  }
+
   const texto = `
 Fecha: ${fecha.value}
 Rut: ${rut.value}
@@ -69,13 +78,66 @@ Tarjeta: ${tarjeta.value}
 Puerto: ${puerto.value}
 DIRECCIÓN: ${direccion.value}
 OBSERVACIÓN DE SOPORTE:
-${observacion.value}
+${observacionFinal}
 `.trim();
 
-  navigator.clipboard.writeText(texto).then(() => {
-    guardarHistorial(texto);
-    alert("Información copiada correctamente");
+  navigator.clipboard.writeText(texto);
+  guardarHistorial(texto);
+}
+
+/* ===== CONFIGURACIÓN TARJETAS ===== */
+function cargarConfig() {
+  const select = document.getElementById("configSesion");
+  select.innerHTML = "";
+  Object.keys(obtenerDatos()).forEach(s => {
+    if (s !== "Manual") {
+      select.innerHTML += `<option value="${s}">${s}</option>`;
+    }
   });
+  mostrarTarjetas();
+}
+
+function mostrarTarjetas() {
+  const sesion = configSesion.value;
+  const cont = document.getElementById("tarjetasObservaciones");
+  cont.innerHTML = "";
+
+  (obtenerDatos()[sesion] || []).forEach((obs, index) => {
+    cont.innerHTML += `
+      <div class="tarjeta">
+        <textarea onchange="editarObservacion(${index}, this.value)">${obs}</textarea>
+        <button onclick="eliminarObservacion(${index})">🗑</button>
+      </div>
+    `;
+  });
+}
+
+function agregarObservacion() {
+  const sesion = configSesion.value;
+  const nueva = nuevaObservacion.value;
+  if (!nueva) return;
+
+  const data = obtenerDatos();
+  data[sesion].push(nueva);
+  guardarDatos(data);
+
+  nuevaObservacion.value = "";
+  mostrarTarjetas();
+}
+
+function editarObservacion(index, valor) {
+  const sesion = configSesion.value;
+  const data = obtenerDatos();
+  data[sesion][index] = valor;
+  guardarDatos(data);
+}
+
+function eliminarObservacion(index) {
+  const sesion = configSesion.value;
+  const data = obtenerDatos();
+  data[sesion].splice(index, 1);
+  guardarDatos(data);
+  mostrarTarjetas();
 }
 
 /* ===== HISTORIAL ===== */
@@ -87,27 +149,39 @@ function guardarHistorial(texto) {
 }
 
 function cargarHistorial() {
-  historialLista.innerHTML = "";
+  const filtro = filtroRut.value.toLowerCase();
+  const lista = historialLista;
+  lista.innerHTML = "";
+
   (JSON.parse(localStorage.getItem("historial")) || []).forEach(t => {
-    const d = document.createElement("div");
-    d.className = "historial-item";
-    d.innerHTML = `
-      <span>${t.split("\n")[0]}</span>
-      <button onclick="navigator.clipboard.writeText(\`${t}\`)">📋</button>
+    if (!t.toLowerCase().includes(filtro)) return;
+
+    lista.innerHTML += `
+      <div class="historial-item">
+        <span>${t.split("\n")[1]}</span>
+        <button onclick="navigator.clipboard.writeText(\`${t}\`)">📋</button>
+      </div>
     `;
-    historialLista.appendChild(d);
   });
 }
 
-/* ===== SONDEO ===== */
-function enviarSondeo() {
-  window.open(
-    "https://docs.google.com/forms/d/e/1FAIpQLScOnqtEkPZTISXN4o3vrsi_vjMF3GcPuBlb0dIqJOuZVmeklQ/viewform",
-    "_blank"
-  );
+/* ===== LINKS ===== */
+function cargarLinks() {
+  const cont = document.getElementById("linksLista");
+  cont.innerHTML = "";
+
+  linksImportantes.forEach(l => {
+    cont.innerHTML += `
+      <div class="link-item">
+        <a href="${l.url}" target="_blank">${l.nombre}</a>
+        <div class="url-text">${l.url}</div>
+      </div>
+    `;
+  });
 }
 
 /* ===== INIT ===== */
 cargarSubSesiones();
 cargarConfig();
 cargarHistorial();
+cargarLinks();
