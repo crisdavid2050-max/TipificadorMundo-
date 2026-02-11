@@ -55,3 +55,31 @@ button {
   display: flex;
   justify-content: space-between;
 }
+.observacion-preview {
+  margin-top: 10px;
+  padding: 10px;
+  background: #eef2f7;
+  border-radius: 5px;
+}
+
+.tarjeta {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.tarjeta textarea {
+  flex: 1;
+}
+
+.link-item {
+  background: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.url-text {
+  font-size: 12px;
+  color: gray;
+}
