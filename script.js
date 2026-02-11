@@ -40,6 +40,8 @@ function cargarObservaciones() {
   const cont = document.getElementById("contenedorObservaciones");
   const preview = document.getElementById("previewObservacion");
 
+  if (!cont || !preview) return;
+
   cont.innerHTML = "";
   preview.innerHTML = "";
 
@@ -109,6 +111,33 @@ ${observacionFinal}
   guardarHistorial(texto);
 }
 
+/* ================= LIMPIAR FORMULARIO ================= */
+function limpiarFormulario() {
+
+  fecha.value = "";
+  rut.value = "";
+  nombre.value = "";
+  idLlamada.value = "";
+  numero.value = "";
+  ont.value = "";
+  olt.value = "";
+  tarjeta.value = "";
+  puerto.value = "";
+  direccion.value = "";
+
+  const selectSesion = document.getElementById("subSesion");
+  if (selectSesion) {
+    selectSesion.selectedIndex = 0;
+  }
+
+  cargarObservaciones();
+
+  const preview = document.getElementById("previewObservacion");
+  if (preview) {
+    preview.innerHTML = "";
+  }
+}
+
 /* ================= CONFIGURACIÓN ================= */
 function cargarConfig() {
   const select = document.getElementById("configSesion");
@@ -133,6 +162,8 @@ function cargarConfig() {
 function mostrarTarjetas() {
   const sesion = document.getElementById("configSesion").value;
   const cont = document.getElementById("tarjetasObservaciones");
+  if (!cont) return;
+
   cont.innerHTML = "";
 
   const data = obtenerDatos();
@@ -155,7 +186,7 @@ function agregarObservacion() {
   const sesion = document.getElementById("configSesion").value;
   const input = document.getElementById("nuevaObservacion");
 
-  if (!input.value) return;
+  if (!input || !input.value) return;
 
   const data = obtenerDatos();
   data[sesion].push(input.value);
@@ -194,11 +225,15 @@ function guardarHistorial(texto) {
 
 function cargarHistorial() {
   const lista = document.getElementById("historialLista");
-  const filtro = document.getElementById("filtroRut")?.value.toLowerCase() || "";
+  const filtroInput = document.getElementById("filtroRut");
+  if (!lista) return;
+
+  const filtro = filtroInput ? filtroInput.value.toLowerCase() : "";
 
   lista.innerHTML = "";
 
   (JSON.parse(localStorage.getItem("historial")) || []).forEach(t => {
+
     if (!t.toLowerCase().includes(filtro)) return;
 
     const div = document.createElement("div");
@@ -230,10 +265,11 @@ function cargarLinks() {
   });
 }
 
-/* ================= INIT CORRECTO ================= */
+/* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", function () {
   cargarSubSesiones();
   cargarConfig();
   cargarHistorial();
   cargarLinks();
 });
+    
