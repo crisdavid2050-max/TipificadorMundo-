@@ -1,48 +1,30 @@
-:root {
-  --azul: #0057b8;
-  --azul-oscuro: #003f8a;
-  --gris: #f4f6f8;
-}
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: var(--gris);
+  background: #f4f6f8;
 }
 
 header {
-  background: var(--azul);
+  background: #0057b8;
   color: white;
-  padding: 15px;
   text-align: center;
+  padding: 15px;
 }
 
-.tabs {
-  display: flex;
-}
+.tabs { display: flex; }
 
 .tab {
   flex: 1;
   padding: 12px;
   border: none;
   background: #ddd;
-  cursor: pointer;
   font-weight: bold;
 }
 
-.tab.active {
-  background: var(--azul-oscuro);
-  color: white;
-}
+.tab.active { background: #003f8a; color: white; }
 
-.tab-content {
-  display: none;
-  padding: 20px;
-}
-
-.tab-content.active {
-  display: block;
-}
+.tab-content { display: none; padding: 20px; }
+.tab-content.active { display: block; }
 
 .grid {
   display: grid;
@@ -50,37 +32,26 @@ header {
   gap: 10px;
 }
 
-label {
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-}
+label { display: flex; flex-direction: column; }
+.full { margin-top: 15px; }
 
-.full {
-  margin-top: 15px;
-}
+input, select, textarea { padding: 8px; margin-top: 5px; }
 
-input, select {
-  padding: 8px;
-  margin-top: 4px;
-}
-
-.buttons {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-}
+.buttons { margin-top: 20px; display: flex; gap: 10px; }
 
 button {
   padding: 12px;
-  border: none;
-  background: var(--azul);
+  background: #0057b8;
   color: white;
-  font-weight: bold;
-  cursor: pointer;
+  border: none;
   border-radius: 4px;
 }
 
-button:hover {
-  background: var(--azul-oscuro);
+.historial-item {
+  background: white;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
 }
