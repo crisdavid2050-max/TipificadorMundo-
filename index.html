@@ -15,14 +15,16 @@
 <nav class="tabs">
   <button class="tab active" onclick="mostrarTab('tipificacion', this)">Tipificación</button>
   <button class="tab" onclick="mostrarTab('sondeo', this)">Sondeo</button>
+  <button class="tab" onclick="mostrarTab('historial', this)">Historial</button>
+  <button class="tab" onclick="mostrarTab('configuracion', this)">Configuración</button>
 </nav>
 
 <section id="tipificacion" class="tab-content active">
   <div class="grid">
     <label>Fecha <input type="date" id="fecha"></label>
-    <label>RUT <input type="text" id="rut"></label>
+    <label>Rut <input type="text" id="rut"></label>
     <label>Nombre <input type="text" id="nombre"></label>
-    <label>ID Llamada <input type="text" id="idLlamada"></label>
+    <label>Id llamada <input type="text" id="idLlamada"></label>
     <label>Número <input type="text" id="numero"></label>
     <label>ONT <input type="text" id="ont"></label>
     <label>OLT <input type="text" id="olt"></label>
@@ -30,19 +32,38 @@
   </div>
 
   <label class="full">
+    Sub-sesión
+    <select id="subSesion" onchange="cargarObservaciones()"></select>
+  </label>
+
+  <label class="full">
     Observación de Soporte
     <select id="observacion"></select>
   </label>
 
   <div class="buttons">
-    <button onclick="copiarTodo()">📋 Copiar toda la información</button>
+    <button onclick="copiarTodo()">📋 Copiar información</button>
     <button onclick="enviarSondeo()">📨 Enviar Sondeo</button>
   </div>
 </section>
 
 <section id="sondeo" class="tab-content">
-  <h2>Sondeo</h2>
-  <p>Usa el botón <strong>Enviar Sondeo</strong> para abrir el formulario de Google.</p>
+  <p>Usa el botón <b>Enviar Sondeo</b> para abrir el formulario de Google.</p>
+</section>
+
+<section id="historial" class="tab-content">
+  <h2>Historial de Tipificaciones</h2>
+  <div id="historialLista"></div>
+</section>
+
+<section id="configuracion" class="tab-content">
+  <h2>Configuración de Observaciones</h2>
+  <label>Sub-sesión</label>
+  <select id="configSesion" onchange="cargarEditor()"></select>
+
+  <textarea id="editorObservaciones" rows="10" placeholder="Una observación por línea"></textarea>
+  <br><br>
+  <button onclick="guardarObservaciones()">💾 Guardar Observaciones</button>
 </section>
 
 <script src="datos.js"></script>
