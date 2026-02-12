@@ -1,5 +1,3 @@
-/* ================= SUB-SESIONES ================= */
-
 const observacionesPorSesion = {
   "Manual": [],
   "Tareas cerradas": [],
@@ -9,8 +7,6 @@ const observacionesPorSesion = {
   "Persiste": [],
   "Sop N2": []
 };
-
-/* ================= LINKS PERMANENTES ================= */
 
 const linksImportantes = [
   { nombre: "VICIDIAL", url: "https://cc.mundopacifico.cl/agc/vicidial.php?VD_login=1001047482&pl=5461c&pp=MuNd0P4c1F1c01nt3gr4" },
