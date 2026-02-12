@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<button class="dark-btn" onclick="toggleDarkMode()">🌙</button>
+<button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
 
 <header>
 <h1>TipificadorMundo</h1>
@@ -21,28 +21,27 @@
 <button class="tab" onclick="mostrarTab('link',this)">Link</button>
 </nav>
 
-<!-- TIPIFICACIÓN -->
-<section id="tipificacion" class="tab-content active">
+<section id="tipificacion" class="tab-content active fade-in">
 
 <div class="grid">
-<label>Rut <input type="text" id="rut" required></label>
-<label>Nombre <input type="text" id="nombre"></label>
-<label>Id llamada <input type="text" id="idLlamada"></label>
-<label>Número <input type="text" id="numero"></label>
-<label>ONT <input type="text" id="ont" required></label>
-<label>OLT <input type="text" id="olt" required></label>
+<label>Rut<input type="text" id="rut"></label>
+<label>Nombre<input type="text" id="nombre"></label>
+<label>Id llamada<input type="text" id="idLlamada"></label>
+<label>Número<input type="text" id="numero"></label>
+<label>ONT<input type="text" id="ont"></label>
+<label>OLT<input type="text" id="olt"></label>
 
-<label>Tarjeta 
-<input type="text" id="tarjeta" maxlength="2" pattern="\d{1,2}" inputmode="numeric">
+<label>Tarjeta
+<input type="text" id="tarjeta" maxlength="2" inputmode="numeric" pattern="\d{1,2}">
 </label>
 
-<label>Puerto 
-<input type="text" id="puerto" maxlength="2" pattern="\d{1,2}" inputmode="numeric">
+<label>Puerto
+<input type="text" id="puerto" maxlength="2" inputmode="numeric" pattern="\d{1,2}">
 </label>
 
-<label>Nodo <input type="text" id="nodo"></label>
-<label>Dirección <input type="text" id="direccion"></label>
-<label>Cédula Ejecutivo <input type="text" id="cedulaEjecutivo"></label>
+<label>Nodo<input type="text" id="nodo"></label>
+<label>Dirección<input type="text" id="direccion"></label>
+<label>Cédula Ejecutivo<input type="text" id="cedulaEjecutivo"></label>
 </div>
 
 <label>Sub-sesión
@@ -53,50 +52,121 @@
 <div class="observacion-preview" id="previewObservacion"></div>
 
 <div class="buttons">
-<button onclick="copiarTodo()">📋 Copiar</button>
-<button onclick="limpiarFormulario()">🧹 Limpiar</button>
-<button onclick="abrirModalInteligente()">📨 Enviar</button>
+<button class="btn-primary" onclick="copiarTodo()">Copiar</button>
+<button class="btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
+<button class="btn-primary" onclick="abrirModalInteligente()">Enviar</button>
 </div>
 
 </section>
 
-<!-- HISTORIAL -->
-<section id="historial" class="tab-content">
+<section id="historial" class="tab-content fade-in">
 <input type="text" id="filtroRut" placeholder="Buscar por RUT" oninput="cargarHistorial()">
 <div id="historialLista"></div>
 </section>
 
-<!-- CONFIGURACIÓN -->
-<section id="configuracion" class="tab-content">
+<section id="configuracion" class="tab-content fade-in">
 <select id="configSesion" onchange="mostrarTarjetas()"></select>
 <div id="tarjetasObservaciones"></div>
 <input type="text" id="nuevaObservacion">
-<button onclick="agregarObservacion()">Agregar</button>
+<button class="btn-primary" onclick="agregarObservacion()">Agregar</button>
 </section>
 
-<!-- LINKS -->
-<section id="link" class="tab-content">
+<section id="link" class="tab-content fade-in">
 <div id="linksLista"></div>
 </section>
 
 <!-- MODAL SONDEO -->
 <div id="modalSondeo" class="modal">
-<div class="modal-content">
+<div class="modal-content slide-in">
 <h3>Sondeo</h3>
+
+<label>Servicio</label>
+<select id="servicioFalla">
+<option>Internet</option>
+<option>TV HD</option>
+<option>VOZ IP</option>
+<option>MUNDO GO</option>
+<option>3 MUNDOS</option>
+<option>MOVIL</option>
+</select>
+
+<label>Falla eléctrica</label>
+<select id="fallaElectrica">
+<option>SI</option>
+<option>NO</option>
+</select>
+
+<label>Generador</label>
+<select id="generador">
+<option>SI</option>
+<option>NO</option>
+</select>
+
+<label>Estado ONT</label>
+<select id="estadoLuces">
+<option>Luces Verdes</option>
+<option>Luz Roja (LOS)</option>
+<option>Power</option>
+<option>PON Intermitente</option>
+<option>Sin Luces</option>
+</select>
+
 <div class="modal-buttons">
 <button onclick="cerrarModal('modalSondeo')">Cancelar</button>
-<button onclick="enviarSondeo()">Enviar</button>
+<button class="btn-primary" onclick="enviarSondeo()">Enviar</button>
 </div>
 </div>
 </div>
 
 <!-- MODAL PERSISTE -->
 <div id="modalPersiste" class="modal">
-<div class="modal-content">
+<div class="modal-content slide-in">
 <h3>Persiste</h3>
+
+<label>Servicio con falla</label>
+<select id="servicioPersiste">
+<option>INTERNET</option>
+<option>TV HD</option>
+<option>VOZ IP</option>
+<option>MUNDO GO</option>
+<option>2 MUNDOS (INTERNET + TV)</option>
+<option>2 MUNDOS (INTERNET + TELEFONIA)</option>
+<option>2 MUNDOS (INTERNET + MUNDO GO)</option>
+<option>3 MUNDOS (INTERNET + MUNDO GO + TELEFONIA)</option>
+</select>
+
+<label>¿Pérdida monitoreo?</label>
+<select id="perdidaMonitoreo">
+<option>SI</option>
+<option>NO</option>
+</select>
+
+<label>Conectado por</label>
+<select id="conectadoPor">
+<option>WIFI</option>
+<option>POR CABLE DE RED</option>
+<option>WIFI Y CABLE</option>
+</select>
+
+<label>Estado ONT</label>
+<select id="estadoOntPersiste">
+<option>CONECTADO</option>
+<option>DESCONOCIDO</option>
+<option>AUTOFIND</option>
+<option>OFFLINE</option>
+<option>POWEROFF</option>
+<option>LOS</option>
+</select>
+
+<label>Redes unificadas</label>
+<select id="redesUnificadas">
+<option>SI</option>
+<option>SEPARADAS</option>
+</select>
+
 <div class="modal-buttons">
 <button onclick="cerrarModal('modalPersiste')">Cancelar</button>
-<button onclick="enviarPersiste()">Enviar</button>
+<button class="btn-primary" onclick="enviarPersiste()">Enviar</button>
 </div>
 </div>
 </div>
