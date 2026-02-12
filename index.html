@@ -1,107 +1,117 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>TipificadorMundo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<title>TipificadorMundo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-  <h1>TipificadorMundo</h1>
+<h1>TipificadorMundo</h1>
 </header>
 
 <nav class="tabs">
-  <button class="tab active" onclick="mostrarTab('tipificacion', this)">Tipificación</button>
-  <button class="tab" onclick="mostrarTab('historial', this)">Historial</button>
-  <button class="tab" onclick="mostrarTab('link', this)">Link</button>
+<button class="tab active" onclick="mostrarTab('tipificacion',this)">Tipificación</button>
+<button class="tab" onclick="mostrarTab('historial',this)">Historial</button>
+<button class="tab" onclick="mostrarTab('configuracion',this)">Configuración</button>
+<button class="tab" onclick="mostrarTab('link',this)">Link</button>
 </nav>
 
-<!-- ================= TIPIFICACIÓN ================= -->
+<!-- TIPIFICACIÓN -->
 <section id="tipificacion" class="tab-content active">
 
-  <div class="grid">
-    <label>Fecha <input type="date" id="fecha"></label>
-    <label>Rut <input type="text" id="rut"></label>
-    <label>Nombre <input type="text" id="nombre"></label>
-    <label>Id llamada <input type="text" id="idLlamada"></label>
-    <label>Número <input type="text" id="numero"></label>
-    <label>ONT <input type="text" id="ont"></label>
-    <label>OLT <input type="text" id="olt"></label>
-    <label>Tarjeta <input type="text" id="tarjeta"></label>
-    <label>Puerto <input type="text" id="puerto"></label>
-    <label>Dirección <input type="text" id="direccion"></label>
-    <label>Nodo <input type="text" id="nodo"></label>
-    <label>Cédula Ejecutivo <input type="text" id="cedulaEjecutivo"></label>
-  </div>
+<div class="grid">
+<label>Rut <input type="text" id="rut"></label>
+<label>Nombre <input type="text" id="nombre"></label>
+<label>Id llamada <input type="text" id="idLlamada"></label>
+<label>Número <input type="text" id="numero"></label>
+<label>ONT <input type="text" id="ont"></label>
+<label>OLT <input type="text" id="olt"></label>
+<label>Tarjeta <input type="text" id="tarjeta"></label>
+<label>Puerto <input type="text" id="puerto"></label>
+<label>Nodo <input type="text" id="nodo"></label>
+<label>Dirección <input type="text" id="direccion"></label>
+<label>Cédula Ejecutivo <input type="text" id="cedulaEjecutivo"></label>
+</div>
 
-  <label>Observación
-    <textarea id="observacionFinal"></textarea>
-  </label>
+<label>Sub-sesión
+<select id="subSesion" onchange="cargarObservaciones()"></select>
+</label>
 
-  <div class="buttons">
-    <button onclick="copiarTodo()">📋 Copiar</button>
-    <button onclick="abrirModalSondeo()">📨 Enviar Sondeo</button>
-  </div>
+<div id="contenedorObservaciones"></div>
+<div class="observacion-preview" id="previewObservacion"></div>
+
+<div class="buttons">
+<button onclick="copiarTodo()">📋 Copiar</button>
+<button onclick="limpiarFormulario()">🧹 Limpiar</button>
+<button onclick="abrirModal()">📨 Enviar</button>
+</div>
 
 </section>
 
-<!-- ================= HISTORIAL ================= -->
+<!-- HISTORIAL -->
 <section id="historial" class="tab-content">
-  <h2>Historial</h2>
-  <div id="historialLista"></div>
+<input type="text" id="filtroRut" placeholder="Buscar por RUT" oninput="cargarHistorial()">
+<div id="historialLista"></div>
 </section>
 
-<!-- ================= LINKS ================= -->
+<!-- CONFIGURACIÓN -->
+<section id="configuracion" class="tab-content">
+<select id="configSesion" onchange="mostrarTarjetas()"></select>
+<div id="tarjetasObservaciones"></div>
+<input type="text" id="nuevaObservacion">
+<button onclick="agregarObservacion()">Agregar</button>
+</section>
+
+<!-- LINKS -->
 <section id="link" class="tab-content">
-  <h2>Links</h2>
-  <div id="linksLista"></div>
+<div id="linksLista"></div>
 </section>
 
-<!-- ================= MODAL SONDEO ================= -->
-<div id="modalSondeo" class="modal">
-  <div class="modal-content">
+<!-- MODAL -->
+<div id="modal" class="modal">
+<div class="modal-content">
+<h3>Validaciones</h3>
 
-    <h2>Sondeo - Validaciones Técnicas</h2>
+<label>Servicio</label>
+<select id="servicioFalla">
+<option>Internet</option>
+<option>TV HD</option>
+<option>VOZ IP</option>
+<option>MUNDO GO</option>
+<option>3 MUNDOS (Todos los servicios)</option>
+<option>MOVIL</option>
+</select>
 
-    <label>Servicio con falla</label>
-    <select id="servicioFalla">
-      <option>Internet</option>
-      <option>TV HD</option>
-      <option>VOZ IP</option>
-      <option>MUNDO GO</option>
-      <option>3 MUNDOS (Todos los servicios)</option>
-      <option>MOVIL</option>
-    </select>
+<label>Falla eléctrica</label>
+<select id="fallaElectrica">
+<option>SI</option>
+<option>NO</option>
+</select>
 
-    <label>¿Tiene falla eléctrica?</label>
-    <select id="fallaElectrica">
-      <option>SI</option>
-      <option>NO</option>
-    </select>
+<label>Generador</label>
+<select id="generador">
+<option>SI</option>
+<option>NO</option>
+</select>
 
-    <label>¿Tiene generador?</label>
-    <select id="generador">
-      <option>SI</option>
-      <option>NO</option>
-    </select>
+<label>Estado ONT</label>
+<select id="estadoLuces">
+<option>Luces Verdes</option>
+<option>Luz Roja (LOS)</option>
+<option>Power</option>
+<option>PON Intermitente</option>
+<option>Sin Luces</option>
+</select>
 
-    <label>Estado luces ONT</label>
-    <select id="estadoLuces">
-      <option>Luces Verdes (sin intermitencia)</option>
-      <option>Luz Roja (LOS)</option>
-      <option>Solo Luz Power</option>
-      <option>Luz Pon (Intermitente)</option>
-      <option>Sin Luces</option>
-    </select>
+<div class="modal-buttons">
+<button onclick="cerrarModal()">Cancelar</button>
+<button onclick="enviarFormulario()">Enviar</button>
+</div>
 
-    <div class="modal-buttons">
-      <button onclick="cerrarModal()">Cancelar</button>
-      <button onclick="enviarSondeo()">Enviar</button>
-    </div>
-
-  </div>
+</div>
 </div>
 
 <script src="datos.js"></script>
