@@ -46,7 +46,7 @@
 <div class="buttons">
 <button onclick="copiarTodo()">📋 Copiar</button>
 <button onclick="limpiarFormulario()">🧹 Limpiar</button>
-<button onclick="abrirModal()">📨 Enviar</button>
+<button onclick="abrirModalInteligente()">📨 Enviar</button>
 </div>
 
 </section>
@@ -70,10 +70,10 @@
 <div id="linksLista"></div>
 </section>
 
-<!-- MODAL -->
-<div id="modal" class="modal">
+<!-- MODAL SONDEO -->
+<div id="modalSondeo" class="modal">
 <div class="modal-content">
-<h3>Validaciones</h3>
+<h3>Sondeo</h3>
 
 <label>Servicio</label>
 <select id="servicioFalla">
@@ -107,10 +107,62 @@
 </select>
 
 <div class="modal-buttons">
-<button onclick="cerrarModal()">Cancelar</button>
-<button onclick="enviarFormulario()">Enviar</button>
+<button onclick="cerrarModal('modalSondeo')">Cancelar</button>
+<button onclick="enviarSondeo()">Enviar</button>
+</div>
+</div>
 </div>
 
+<!-- MODAL PERSISTE -->
+<div id="modalPersiste" class="modal">
+<div class="modal-content">
+<h3>Persiste</h3>
+
+<label>Servicio con falla</label>
+<select id="servicioPersiste">
+<option>INTERNET</option>
+<option>TV HD</option>
+<option>VOZ IP</option>
+<option>MUNDO GO</option>
+<option>2 MUNDOS (INTERNET + TV)</option>
+<option>2 MUNDOS (INTERNET + TELEFONIA)</option>
+<option>2 MUNDOS (INTERNET + MUNDO GO)</option>
+<option>3 MUNDOS (INTERNET + MUNDO GO + TELEFONIA)</option>
+</select>
+
+<label>¿Pérdida de monitoreo?</label>
+<select id="perdidaMonitoreo">
+<option>SI</option>
+<option>NO</option>
+</select>
+
+<label>Conectado por</label>
+<select id="conectadoPor">
+<option>WIFI</option>
+<option>POR CABLE DE RED</option>
+<option>WIFI Y CABLE DE RED</option>
+</select>
+
+<label>Estado ONT</label>
+<select id="estadoOntPersiste">
+<option>CONECTADO</option>
+<option>DESCONOCIDO</option>
+<option>AUTOFIND</option>
+<option>OFFLINE</option>
+<option>POWEROFF</option>
+<option>LOS</option>
+</select>
+
+<label>Redes unificadas</label>
+<select id="redesUnificadas">
+<option>SI</option>
+<option>EL CLIENTE SOLICITA QUE SE LE DEJEN SEPARADAS</option>
+</select>
+
+<div class="modal-buttons">
+<button onclick="cerrarModal('modalPersiste')">Cancelar</button>
+<button onclick="enviarPersiste()">Enviar</button>
+</div>
 </div>
 </div>
 
