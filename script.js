@@ -21,40 +21,32 @@ function cargarSubSesiones() {
   if (!select) return;
 
   select.innerHTML = "";
-
-  const data = obtenerDatos();
-
-  Object.keys(data).forEach(s => {
-    const option = document.createElement("option");
-    option.value = s;
-    option.textContent = s;
-    select.appendChild(option);
+  Object.keys(obtenerDatos()).forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    select.appendChild(opt);
   });
 
   cargarObservaciones();
 }
 
-/* ================= CARGAR OBSERVACIONES ================= */
+/* ================= OBSERVACIONES ================= */
 function cargarObservaciones() {
   const sesion = document.getElementById("subSesion").value;
   const cont = document.getElementById("contenedorObservaciones");
   const preview = document.getElementById("previewObservacion");
 
-  if (!cont || !preview) return;
-
   cont.innerHTML = "";
   preview.innerHTML = "";
 
   if (sesion === "Manual") {
-    cont.innerHTML = `
-      <textarea id="observacionManual" rows="4"
-        placeholder="Escriba la observación manual aquí"></textarea>
-    `;
+    cont.innerHTML = `<textarea id="observacionManual" rows="4"
+      placeholder="Escriba la observación manual aquí"></textarea>`;
     return;
   }
 
-  const data = obtenerDatos();
-  const lista = data[sesion] || [];
+  const lista = obtenerDatos()[sesion] || [];
 
   if (lista.length === 0) {
     cont.innerHTML = "<p>No hay observaciones registradas.</p>";
@@ -72,11 +64,11 @@ function cargarObservaciones() {
   });
 
   select.onchange = function () {
-    preview.innerHTML = this.value;
+    preview.innerText = this.value;
   };
 
   cont.appendChild(select);
-  preview.innerHTML = select.value;
+  preview.innerText = select.value;
 }
 
 /* ================= COPIAR ================= */
@@ -85,11 +77,9 @@ function copiarTodo() {
   let observacionFinal = "";
 
   if (sesion === "Manual") {
-    const manual = document.getElementById("observacionManual");
-    observacionFinal = manual ? manual.value : "";
+    observacionFinal = document.getElementById("observacionManual")?.value || "";
   } else {
-    const select = document.getElementById("observacionSelect");
-    observacionFinal = select ? select.value : "";
+    observacionFinal = document.getElementById("observacionSelect")?.value || "";
   }
 
   const texto = `
@@ -111,111 +101,15 @@ ${observacionFinal}
   guardarHistorial(texto);
 }
 
-/* ================= LIMPIAR FORMULARIO ================= */
+/* ================= LIMPIAR ================= */
 function limpiarFormulario() {
-
-  fecha.value = "";
-  rut.value = "";
-  nombre.value = "";
-  idLlamada.value = "";
-  numero.value = "";
-  ont.value = "";
-  olt.value = "";
-  tarjeta.value = "";
-  puerto.value = "";
-  direccion.value = "";
-
-  const selectSesion = document.getElementById("subSesion");
-  if (selectSesion) {
-    selectSesion.selectedIndex = 0;
-  }
-
+  document.querySelectorAll("#tipificacion input, #tipificacion textarea").forEach(i => i.value = "");
+  document.getElementById("subSesion").selectedIndex = 0;
   cargarObservaciones();
-
-  const preview = document.getElementById("previewObservacion");
-  if (preview) {
-    preview.innerHTML = "";
-  }
+  document.getElementById("previewObservacion").innerHTML = "";
 }
 
-/* ================= CONFIGURACIÓN ================= */
-function cargarConfig() {
-  const select = document.getElementById("configSesion");
-  if (!select) return;
-
-  select.innerHTML = "";
-
-  const data = obtenerDatos();
-
-  Object.keys(data).forEach(s => {
-    if (s !== "Manual") {
-      const opt = document.createElement("option");
-      opt.value = s;
-      opt.textContent = s;
-      select.appendChild(opt);
-    }
-  });
-
-  mostrarTarjetas();
-}
-
-function mostrarTarjetas() {
-  const sesion = document.getElementById("configSesion").value;
-  const cont = document.getElementById("tarjetasObservaciones");
-  if (!cont) return;
-
-  cont.innerHTML = "";
-
-  const data = obtenerDatos();
-  const lista = data[sesion] || [];
-
-  lista.forEach((obs, index) => {
-    const div = document.createElement("div");
-    div.className = "tarjeta";
-
-    div.innerHTML = `
-      <textarea onchange="editarObservacion(${index}, this.value)">${obs}</textarea>
-      <button onclick="eliminarObservacion(${index})">🗑</button>
-    `;
-
-    cont.appendChild(div);
-  });
-}
-
-function agregarObservacion() {
-  const sesion = document.getElementById("configSesion").value;
-  const input = document.getElementById("nuevaObservacion");
-
-  if (!input || !input.value) return;
-
-  const data = obtenerDatos();
-  data[sesion].push(input.value);
-
-  guardarDatos(data);
-
-  input.value = "";
-  mostrarTarjetas();
-}
-
-function editarObservacion(index, valor) {
-  const sesion = document.getElementById("configSesion").value;
-  const data = obtenerDatos();
-
-  data[sesion][index] = valor;
-  guardarDatos(data);
-}
-
-function eliminarObservacion(index) {
-  const sesion = document.getElementById("configSesion").value;
-  const data = obtenerDatos();
-
-  data[sesion].splice(index, 1);
-  guardarDatos(data);
-
-  mostrarTarjetas();
-}
-
-/* ================= HISTORIAL ================= */
+/* ================= HISTORIAL COMPLETO ================= */
 function guardarHistorial(texto) {
   const h = JSON.parse(localStorage.getItem("historial")) || [];
   h.unshift(texto);
@@ -225,11 +119,7 @@ function guardarHistorial(texto) {
 
 function cargarHistorial() {
   const lista = document.getElementById("historialLista");
-  const filtroInput = document.getElementById("filtroRut");
-  if (!lista) return;
-
-  const filtro = filtroInput ? filtroInput.value.toLowerCase() : "";
-
+  const filtro = document.getElementById("filtroRut")?.value.toLowerCase() || "";
   lista.innerHTML = "";
 
   (JSON.parse(localStorage.getItem("historial")) || []).forEach(t => {
@@ -240,8 +130,8 @@ function cargarHistorial() {
     div.className = "historial-item";
 
     div.innerHTML = `
-      <span>${t.split("\n")[1]}</span>
-      <button onclick="navigator.clipboard.writeText(\`${t}\`)">📋</button>
+      <pre>${t}</pre>
+      <button onclick="navigator.clipboard.writeText(\`${t}\`)">📋 Copiar</button>
     `;
 
     lista.appendChild(div);
@@ -251,15 +141,12 @@ function cargarHistorial() {
 /* ================= LINKS ================= */
 function cargarLinks() {
   const cont = document.getElementById("linksLista");
-  if (!cont) return;
-
   cont.innerHTML = "";
 
   linksImportantes.forEach(l => {
     cont.innerHTML += `
       <div class="link-item">
         <a href="${l.url}" target="_blank">${l.nombre}</a>
-        <div class="url-text">${l.url}</div>
       </div>
     `;
   });
@@ -268,8 +155,6 @@ function cargarLinks() {
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", function () {
   cargarSubSesiones();
-  cargarConfig();
   cargarHistorial();
   cargarLinks();
 });
-    
