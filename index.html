@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<button class="dark-btn" onclick="toggleDarkMode()">🌙</button>
+
 <header>
 <h1>TipificadorMundo</h1>
 </header>
@@ -23,14 +25,21 @@
 <section id="tipificacion" class="tab-content active">
 
 <div class="grid">
-<label>Rut <input type="text" id="rut"></label>
+<label>Rut <input type="text" id="rut" required></label>
 <label>Nombre <input type="text" id="nombre"></label>
 <label>Id llamada <input type="text" id="idLlamada"></label>
 <label>Número <input type="text" id="numero"></label>
-<label>ONT <input type="text" id="ont"></label>
-<label>OLT <input type="text" id="olt"></label>
-<label>Tarjeta <input type="text" id="tarjeta"></label>
-<label>Puerto <input type="text" id="puerto"></label>
+<label>ONT <input type="text" id="ont" required></label>
+<label>OLT <input type="text" id="olt" required></label>
+
+<label>Tarjeta 
+<input type="text" id="tarjeta" maxlength="2" pattern="\d{1,2}" inputmode="numeric">
+</label>
+
+<label>Puerto 
+<input type="text" id="puerto" maxlength="2" pattern="\d{1,2}" inputmode="numeric">
+</label>
+
 <label>Nodo <input type="text" id="nodo"></label>
 <label>Dirección <input type="text" id="direccion"></label>
 <label>Cédula Ejecutivo <input type="text" id="cedulaEjecutivo"></label>
@@ -74,38 +83,6 @@
 <div id="modalSondeo" class="modal">
 <div class="modal-content">
 <h3>Sondeo</h3>
-
-<label>Servicio</label>
-<select id="servicioFalla">
-<option>Internet</option>
-<option>TV HD</option>
-<option>VOZ IP</option>
-<option>MUNDO GO</option>
-<option>3 MUNDOS (Todos los servicios)</option>
-<option>MOVIL</option>
-</select>
-
-<label>Falla eléctrica</label>
-<select id="fallaElectrica">
-<option>SI</option>
-<option>NO</option>
-</select>
-
-<label>Generador</label>
-<select id="generador">
-<option>SI</option>
-<option>NO</option>
-</select>
-
-<label>Estado ONT</label>
-<select id="estadoLuces">
-<option>Luces Verdes</option>
-<option>Luz Roja (LOS)</option>
-<option>Power</option>
-<option>PON Intermitente</option>
-<option>Sin Luces</option>
-</select>
-
 <div class="modal-buttons">
 <button onclick="cerrarModal('modalSondeo')">Cancelar</button>
 <button onclick="enviarSondeo()">Enviar</button>
@@ -117,48 +94,6 @@
 <div id="modalPersiste" class="modal">
 <div class="modal-content">
 <h3>Persiste</h3>
-
-<label>Servicio con falla</label>
-<select id="servicioPersiste">
-<option>INTERNET</option>
-<option>TV HD</option>
-<option>VOZ IP</option>
-<option>MUNDO GO</option>
-<option>2 MUNDOS (INTERNET + TV)</option>
-<option>2 MUNDOS (INTERNET + TELEFONIA)</option>
-<option>2 MUNDOS (INTERNET + MUNDO GO)</option>
-<option>3 MUNDOS (INTERNET + MUNDO GO + TELEFONIA)</option>
-</select>
-
-<label>¿Pérdida de monitoreo?</label>
-<select id="perdidaMonitoreo">
-<option>SI</option>
-<option>NO</option>
-</select>
-
-<label>Conectado por</label>
-<select id="conectadoPor">
-<option>WIFI</option>
-<option>POR CABLE DE RED</option>
-<option>WIFI Y CABLE DE RED</option>
-</select>
-
-<label>Estado ONT</label>
-<select id="estadoOntPersiste">
-<option>CONECTADO</option>
-<option>DESCONOCIDO</option>
-<option>AUTOFIND</option>
-<option>OFFLINE</option>
-<option>POWEROFF</option>
-<option>LOS</option>
-</select>
-
-<label>Redes unificadas</label>
-<select id="redesUnificadas">
-<option>SI</option>
-<option>EL CLIENTE SOLICITA QUE SE LE DEJEN SEPARADAS</option>
-</select>
-
 <div class="modal-buttons">
 <button onclick="cerrarModal('modalPersiste')">Cancelar</button>
 <button onclick="enviarPersiste()">Enviar</button>
