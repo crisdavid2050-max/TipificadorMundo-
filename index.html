@@ -15,7 +15,6 @@
 <nav class="tabs">
   <button class="tab active" onclick="mostrarTab('tipificacion', this)">Tipificación</button>
   <button class="tab" onclick="mostrarTab('historial', this)">Historial</button>
-  <button class="tab" onclick="mostrarTab('configuracion', this)">Configuración</button>
   <button class="tab" onclick="mostrarTab('link', this)">Link</button>
 </nav>
 
@@ -30,55 +29,80 @@
     <label>Número <input type="text" id="numero"></label>
     <label>ONT <input type="text" id="ont"></label>
     <label>OLT <input type="text" id="olt"></label>
-    <label>Tarjeta <input type="text" id="tarjeta" maxlength="2"></label>
-    <label>Puerto <input type="text" id="puerto" maxlength="2"></label>
+    <label>Tarjeta <input type="text" id="tarjeta"></label>
+    <label>Puerto <input type="text" id="puerto"></label>
     <label>Dirección <input type="text" id="direccion"></label>
+    <label>Nodo <input type="text" id="nodo"></label>
+    <label>Cédula Ejecutivo <input type="text" id="cedulaEjecutivo"></label>
   </div>
 
-  <label class="full">
-    Sub-sesión
-    <select id="subSesion" onchange="cargarObservaciones()"></select>
+  <label>Observación
+    <textarea id="observacionFinal"></textarea>
   </label>
 
-  <div id="contenedorObservaciones"></div>
-
-  <div class="observacion-preview" id="previewObservacion"></div>
-
   <div class="buttons">
-  <button onclick="copiarTodo()">📋 Copiar información</button>
-  <button onclick="limpiarFormulario()">🧹 Limpiar</button>
+    <button onclick="copiarTodo()">📋 Copiar</button>
+    <button onclick="abrirModalSondeo()">📨 Enviar Sondeo</button>
   </div>
-  
 
 </section>
 
 <!-- ================= HISTORIAL ================= -->
 <section id="historial" class="tab-content">
   <h2>Historial</h2>
-
-  <input type="text" id="filtroRut" placeholder="Buscar por RUT"
-         oninput="cargarHistorial()">
-
   <div id="historialLista"></div>
-</section>
-
-<!-- ================= CONFIGURACIÓN ================= -->
-<section id="configuracion" class="tab-content">
-  <h2>Configuración Observaciones</h2>
-
-  <select id="configSesion" onchange="mostrarTarjetas()"></select>
-
-  <div id="tarjetasObservaciones"></div>
-
-  <input type="text" id="nuevaObservacion" placeholder="Nueva observación">
-  <button onclick="agregarObservacion()">Agregar</button>
 </section>
 
 <!-- ================= LINKS ================= -->
 <section id="link" class="tab-content">
-  <h2>Links Importantes</h2>
+  <h2>Links</h2>
   <div id="linksLista"></div>
 </section>
+
+<!-- ================= MODAL SONDEO ================= -->
+<div id="modalSondeo" class="modal">
+  <div class="modal-content">
+
+    <h2>Sondeo - Validaciones Técnicas</h2>
+
+    <label>Servicio con falla</label>
+    <select id="servicioFalla">
+      <option>Internet</option>
+      <option>TV HD</option>
+      <option>VOZ IP</option>
+      <option>MUNDO GO</option>
+      <option>3 MUNDOS (Todos los servicios)</option>
+      <option>MOVIL</option>
+    </select>
+
+    <label>¿Tiene falla eléctrica?</label>
+    <select id="fallaElectrica">
+      <option>SI</option>
+      <option>NO</option>
+    </select>
+
+    <label>¿Tiene generador?</label>
+    <select id="generador">
+      <option>SI</option>
+      <option>NO</option>
+    </select>
+
+    <label>Estado luces ONT</label>
+    <select id="estadoLuces">
+      <option>Luces Verdes (sin intermitencia)</option>
+      <option>Luz Roja (LOS)</option>
+      <option>Solo Luz Power</option>
+      <option>Luz Pon (Intermitente)</option>
+      <option>Sin Luces</option>
+    </select>
+
+    <div class="modal-buttons">
+      <button onclick="cerrarModal()">Cancelar</button>
+      <button onclick="enviarSondeo()">Enviar</button>
+    </div>
+
+  </div>
+</div>
 
 <script src="datos.js"></script>
 <script src="script.js"></script>
